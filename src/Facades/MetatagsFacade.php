@@ -1,8 +1,9 @@
 <?php
 
-namespace Mobiosolutions\Metatags\Facades;
+namespace FelipeMateus\Metatags\Facades;
 
 use Illuminate\Support\Facades\Facade;
+
 /**
  * Metatag Facade Class
  *

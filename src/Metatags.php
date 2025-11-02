@@ -1,11 +1,12 @@
 <?php
 
-namespace Mobiosolutions\Metatags;
+namespace FelipeMateus\Metatags;
 
 /* A Laravel package to fetch webpage metadata ( Open Graph | Twitter | Facebook | Article ) */
 
 use DOMDocument;
 use DOMXPath;
+use GuzzleHttp\Client;
 
 /**
  * Metatag class is to get Metadata from webpage URL
@@ -27,8 +28,11 @@ class Metatags
      */
    static function get( $url, $onlyOGMetatags = false )
     {
-        $html = self::getMetaContents($url);
 
+        $html = self::getMetaContents($url);
+        if (!is_string($html)) {
+            $html = '';
+        }
         $doc = new DOMDocument();
         @$doc->loadHTML($html);
 
@@ -44,22 +48,24 @@ class Metatags
         $mmetas = array();
 
         foreach ($mMetas as $meta) {
-            $key = $meta->getAttribute('name');
-            $value = $meta->getAttribute('value');
+            if ($meta instanceof \DOMElement) {
+                $key = $meta->getAttribute('name');
+                $value = $meta->getAttribute('value');
 
-            if( empty($key) ) {
-                $key = $meta->getAttribute('property');
-            }
-
-            if( empty($key) ) {
-                $key = $meta->getAttribute('itemprop');
-            }
-
-            if( !empty($key) ) {
-                if(empty($value)) {
-                    $value = $meta->getAttribute('content');
+                if (empty($key)) {
+                    $key = $meta->getAttribute('property');
                 }
-                $mmetas[$key] = $value;
+
+                if (empty($key)) {
+                    $key = $meta->getAttribute('itemprop');
+                }
+
+                if (!empty($key)) {
+                    if (empty($value)) {
+                        $value = $meta->getAttribute('content');
+                    }
+                    $mmetas[$key] = $value;
+                }
             }
         }
 
@@ -75,16 +81,23 @@ class Metatags
      */
     protected static function getMetaContents($url)
     {
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_FAILONERROR, 1);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-        $response = curl_exec($curl);
-        curl_close($curl);
-        return $response;
+        $client = new Client([
+            'timeout' => 30,
+            'verify' => true,
+            'allow_redirects' => true,
+        ]);
+        $appUrl = getenv('APP_URL') ?: 'https://laravel.com';
+        $userAgent = "(compatible; Laravel Metatags/1.0; +{$appUrl})";
+        try {
+            $response = $client->request('GET', $url, [
+                'headers' => [
+                    'User-Agent' => $userAgent,
+                    'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                ],
+            ]);
+            return $response->getBody()->getContents();
+        } catch (\Exception $e) {
+            throw new \Exception('Erro ao buscar conteúdo da URL: ' . $e->getMessage());
+        }
     }
 }

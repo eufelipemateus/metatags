@@ -1,16 +1,18 @@
 <?php
 
-namespace Mobiosolutions\Metatags\Providers;
+namespace FelipeMateus\Metatags\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class MetatagsProvider extends ServiceProvider {
+class MetatagsProvider extends ServiceProvider
+{
     /**
      * Bootstrap the application services.
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         //
     }
     /**
@@ -18,9 +20,10 @@ class MetatagsProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
-        $this->app->bind('Metatags', function() {
-            return new \Mobiosolutions\Metatags\Metatags;
+    public function register()
+    {
+        $this->app->bind('Metatags', function () {
+            return new \FelipeMateus\Metatags\Metatags;
         });
     }
 }

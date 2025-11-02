@@ -1,7 +1,7 @@
 {
-    "name": "mobiosolutions/metatags",
+    "name": "felipemateus/metatags",
     "version":"1.0.0",
-    "homepage":"https://github.com/mobiosolutions/metatags" ,
+    "homepage":"https://github.com/eufelipemateus/metatags" ,
    "keywords":[
        "Metadata",
        "Crawler",
@@ -15,7 +15,12 @@
      ],
     "description": "A Laravel package to fetch webpage metadata ( Open Graph | Twitter | Facebook | Article ) ect...",
     "type": "library",
-    "require": {},
+    "require": {
+        "php": ">=7.4",
+        "domdocument": "*",
+        "xml": "*",
+        "guzzlehttp/guzzle": "^7.10"
+    },
     "license": "MIT",
     "config": {
     	"optimize-autoloader": true
@@ -32,7 +37,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Mobiosolutions\\Metatags\\": "src/"
+            "FelipeMateus\\Metatags\\": "src/"
         }
     },
     "minimum-stability": "stable",
@@ -40,10 +45,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Mobiosolutions\\Metatags\\Providers\\MetatagsProvider"
+                "FelipeMateus\\Metatags\\Providers\\MetatagsProvider"
             ],
             "aliases": {
-                "Metatags": "Mobiosolutions\\Metatags\\Facades\\MetatagsFacade"
+                "Metatags": "FelipeMateus\\Metatags\\Facades\\MetatagsFacade"
             }
         }
     }

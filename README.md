@@ -3,12 +3,12 @@ A Laravel package to fetch all metadata of a webpage.
 
 
 - **Add Service Provider** 
-   Open `config/app.php` and add `Mobiosolutions\Metatags\Providers\MetatagsProvider::class,` to the end of `providers` array:
+   Open `config/app.php` and add `FelipeMateus\Metatags\Providers\MetatagsProvider::class,` to the end of `providers` array:
 
     ```
     'providers' => array(
         ....
-        Mobiosolutions\Metatags\Providers\MetatagsProvider::class,
+        FelipeMateus\Metatags\Providers\MetatagsProvider::class,
     ),
     ```
    Next under the `aliases` array:
@@ -16,7 +16,7 @@ A Laravel package to fetch all metadata of a webpage.
     ```
     'aliases' => array(
         ....
-        'Metatags' => Mobiosolutions\Metatags\Facades\MetatagsFacade::class
+        'Metatags' => FelipeMateus\Metatags\Facades\MetatagsFacade::class
     ),
     ```
 ## Requirements

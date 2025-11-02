@@ -17,8 +17,6 @@
     "type": "library",
     "require": {
         "php": ">=7.4",
-        "domdocument": "*",
-        "xml": "*",
         "guzzlehttp/guzzle": "^7.10"
     },
     "license": "MIT",
